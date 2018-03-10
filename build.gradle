@@ -7,12 +7,14 @@ buildscript {
 	}
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+		classpath "io.spring.gradle:dependency-management-plugin:0.5.2.RELEASE"
 	}
 }
 
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
+apply plugin: "io.spring.dependency-management"
 
 group = 'org.jcol'
 version = '0.0.1-SNAPSHOT'
@@ -20,10 +22,20 @@ sourceCompatibility = 1.8
 
 repositories {
 	mavenCentral()
+	maven {
+	   url 'https://repo.spring.io/libs-milestone'
+    }
+
+}   
+
+dependencyManagement {
+     imports {
+          mavenBom 'org.springframework.cloud:spring-cloud-stream-dependencies:Elmhurst.RC2'
+     }
 }
 
-
 dependencies {
+
 	compile('org.springframework.boot:spring-boot-starter-jersey')
 	compile('org.springframework.boot:spring-boot-starter-web')
 
@@ -36,6 +48,10 @@ dependencies {
     compile 'org.projectlombok:lombok:1.16.20'
     compile('org.springframework.boot:spring-boot-starter-actuator')
     compile 'org.springframework.data:spring-data-redis'
+    compile 'org.springframework.kafka:spring-kafka'
     compile group: 'redis.clients', name: 'jedis', version: '2.9.0'
-}
     
+    compile 'org.springframework.cloud:spring-cloud-stream'
+    compile 'org.springframework.cloud:spring-cloud-starter-stream-kafka'
+} 
+
